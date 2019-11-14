@@ -29,6 +29,7 @@ class Auth extends CI_Controller{
         $password = $this->input->post('password');
 
         $user = $this->db->get_where('user', ['email' => $email])->row_array();
+
         if($user){
             if ($user['is_active'] == 1) {
                 if (password_verify($password, $user['password'])) {
@@ -36,8 +37,8 @@ class Auth extends CI_Controller{
                         'email' => $user['email'],
                         'role_id' => $user['role_id']
                     ];
-                    $this->session->set_userdate($data);
-                    redirect('auth');
+                    $this->session->set_userdata($data);
+                    redirect('user');
                 }else{
                     $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Wrong Password!</div>');
                 redirect('auth');
@@ -82,7 +83,7 @@ class Auth extends CI_Controller{
                 'date_created'=>time(),
             ];
             $this->db->insert('user',$data);
-            $this->session->set_flashdata('message', '<div class="alert alertsuccess" role="alert">Congratulation! your account has been created. Please Login</div>');
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Congratulation! your account has been created. Please Login</div>');
             redirect('auth');
 
     }
